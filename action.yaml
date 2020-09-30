@@ -1,6 +1,10 @@
 name: "gcloud Setup action"
 description: "Setup docker auth and kubernetes auth"
 inputs:
+  service_account_key:
+    description: "Google Service Key"
+    required: true
+    default: ""
   project:
     description: "Google Project"
     required: true
@@ -18,7 +22,7 @@ runs:
   steps:
     - name: Authenticate with Google Cloud
       shell: bash
-      run: echo ${{ secrets.GOOGLE_SERVICE_KEY }} | gcloud auth activate-service-account --key-file=-
+      run: echo ${{ inputs.service_account_key }} | gcloud auth activate-service-account --key-file=-
 
     - name: Configure project and region
       shell: bash
