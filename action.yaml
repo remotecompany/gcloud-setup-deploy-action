@@ -1,0 +1,37 @@
+name: "gcloud Setup action"
+description: "Setup docker auth and kubernetes auth"
+inputs:
+  project:
+    description: "Google Project"
+    required: true
+    default: "mailerlite-v2"
+  zone:
+    description: "Google Zone"
+    required: true
+    default: "europe-west3"
+  cluster:
+    description: "Google Kubernetes Cluster"
+    required: true
+    default: "mailerlite-cluster"
+runs:
+  using: "composite"
+  steps:
+    - name: Authenticate with Google Cloud
+      shell: bash
+      run: echo ${{ secrets.GOOGLE_SERVICE_KEY }} | gcloud auth activate-service-account --key-file=-
+
+    - name: Configure project and region
+      shell: bash
+      run: |
+        gcloud --quiet config set project ${{ inputs.project }}
+        gcloud --quiet config set compute/zone ${{ inputs.zone }}
+
+    - name: Get Cluster Credentials
+      shell: bash
+      run: |
+        gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }}
+
+    - name: Docker Login
+      shell: bash
+      run: |
+        gcloud beta auth configure-docker europe-docker.pkg.dev --quiet
