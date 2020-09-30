@@ -22,7 +22,9 @@ runs:
   steps:
     - name: Authenticate with Google Cloud
       shell: bash
-      run: echo ${{ inputs.service_account_key }} | gcloud auth activate-service-account --key-file=-
+      run: |
+        echo ${{ inputs.service_account_key }} | base64 -d > /tmp/key.json
+        gcloud auth activate-service-account --key-file=/tmp/key.json
 
     - name: Configure project and region
       shell: bash
