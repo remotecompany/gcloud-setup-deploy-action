@@ -35,7 +35,7 @@ runs:
     - name: Get Cluster Credentials
       shell: bash
       run: |
-        gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }}
+         if [ "${{ inputs.cluster }}" != "" ]; then gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }} fi
 
     - name: Docker Login
       shell: bash
