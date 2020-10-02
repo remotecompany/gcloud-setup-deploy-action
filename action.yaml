@@ -65,7 +65,7 @@ runs:
     - name: Skaffold build and deploy ${{ inputs.skaffold_project }}
       shell: bash
       run: |
-        if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_project ]]; then
+        if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_project }}" ]]; then
           skaffold run -p ${{ inputs.skaffold_project }}
         fi
 
