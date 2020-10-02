@@ -23,7 +23,7 @@ Based on what you wish to do in this action.
 Running skaffold to deploy in the project?
 
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.11
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.12
 with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -34,7 +34,7 @@ with:
 
 Just Building a docker image? the version will be grabbed from the last tag (make sure this is something like v1.0.1 etc)
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.11
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.12
 with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
