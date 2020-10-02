@@ -19,11 +19,14 @@ Based on what you wish to do in this action.
 
 **docker_file** - Only required when building a docker image e.g: docker/mailerlite/Dockerfile "defaults too Dockerfile"
 
+**docker_tag** - if specified will allow yu to overide using the defualt git tag.
+
+
 # Examples
 Running skaffold to deploy in the project?
 
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.12
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.13
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -34,11 +37,23 @@ Running skaffold to deploy in the project?
 
 Just Building a docker image? the version will be grabbed from the last tag (make sure this is something like v1.0.1 etc)
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.12
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.13
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
     zone: "europe-west1"
     docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
     docker_file: "Dockerfile"
+```
+
+Overide git tag
+``` yaml
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.13
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
+    docker_file: "Dockerfile"
+    docker_tag: "v1.0.2"
 ```

@@ -27,6 +27,9 @@ inputs:
     description: "The docker file path e.g: docker/mailerlite/Dockerfile"
     required: false
     default: "Dockerfile"
+  docker_tag:
+    description: "The docker tag to overide the git version tag"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -35,7 +38,11 @@ runs:
       id: get_version
       run: |
         if [ -n "${{ inputs.docker_slug }}" ]; then
-          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+          if [ -n "${{ inputs.docker_tag }}" ]; then
+            echo '::set-output name=VERSION::${{ inputs.docker_tag }}'
+          else
+            echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+          fi
         fi
 
     - name: Authenticate with Google Cloud
