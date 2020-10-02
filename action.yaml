@@ -19,9 +19,25 @@ inputs:
     description: "The Skaffold project to use (prodcution/dev etc) *required if you are deploying"
     required: false
     default: ""
+  docker_slug:
+    description: "The docker repo slug e.g: europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
+    required: false
+    default: ""
+  docker_file:
+    description: "The docker file path e.g: docker/mailerlite/Dockerfile"
+    required: false
+    default: "Dockerfile"
 runs:
   using: "composite"
   steps:
+    - name: Get the version
+      shell: bash
+      id: get_version
+      run: |
+        if [ -n "${{ inputs.docker_slug }}" ]; then
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        fi
+
     - name: Authenticate with Google Cloud
       shell: bash
       run: |
@@ -49,6 +65,14 @@ runs:
     - name: Skaffold build and deploy ${{ inputs.skaffold_project }}
       shell: bash
       run: |
-        if [ -n "${{ inputs.skaffold_project }}" ]; then
+        if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_project ]]; then
           skaffold run -p ${{ inputs.skaffold_project }}
+        fi
+
+    - name: Build and Push Docker Image if there is a docker slug
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.docker_slug }}" ]; then
+          docker build -f ${{ inputs.docker_file }} -t ${{ inputs.docker_slug }}:${{ steps.get_version.outputs.VERSION }} -t ${{ inputs.docker_slug }}:latest .
+          echo "${{ inputs.docker_slug }}:${{ steps.get_version.outputs.VERSION }}" "${{ inputs.docker_slug }}:latest" | xargs -n 1 docker push
         fi
