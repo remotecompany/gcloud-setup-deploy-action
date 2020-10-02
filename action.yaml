@@ -14,9 +14,11 @@ inputs:
   cluster:
     description: "Google Kubernetes Cluster *required if you are deploying"
     required: false
+    default: ""
   skaffold_project:
     description: "The Skaffold project to use (prodcution/dev etc) *required if you are deploying"
     required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -40,9 +42,13 @@ runs:
     - name: Get Cluster Credentials
       shell: bash
       run: |
-        if [ -n "${{ inputs.cluster }}" ]; then gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }} fi
+        if [ -n "${{ inputs.cluster }}" ]; then
+          gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }}
+        fi
 
     - name: Skaffold build and deploy ${{ inputs.skaffold_project }}
       shell: bash
       run: |
-        if [ -n "${{ inputs.skaffold_project }}" ]; then skaffold run -p ${{ inputs.skaffold_project }} fi
+        if [ -n "${{ inputs.skaffold_project }}" ]; then
+          skaffold run -p ${{ inputs.skaffold_project }}
+        fi
