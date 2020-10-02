@@ -1,5 +1,5 @@
-name: "gcloud Setup action"
-description: "Setup docker auth and kubernetes auth"
+name: "gcloud Setup and deploy action"
+description: "Setup docker auth and kubernetes auth and deploy via skaffold"
 inputs:
   service_account_key:
     description: "Google Service Key"
@@ -8,15 +8,15 @@ inputs:
   project:
     description: "Google Project"
     required: true
-    default: "mailerlite-v2"
   zone:
     description: "Google Zone"
     required: true
-    default: "europe-west3"
   cluster:
-    description: "Google Kubernetes Cluster"
-    required: true
-    default: "mailerlite-cluster"
+    description: "Google Kubernetes Cluster *required if you are deploying"
+    required: false
+  skaffold_project:
+    description: "The Skaffold project to use (prodcution/dev etc) *required if you are deploying"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -32,12 +32,17 @@ runs:
         gcloud --quiet config set project ${{ inputs.project }}
         gcloud --quiet config set compute/zone ${{ inputs.zone }}
 
-    - name: Get Cluster Credentials
-      shell: bash
-      run: |
-        gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }}
-
     - name: Docker Login
       shell: bash
       run: |
         gcloud beta auth configure-docker europe-docker.pkg.dev --quiet
+
+    - name: Get Cluster Credentials
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.cluster }}" ]; then gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }} fi
+
+    - name: Skaffold build and deploy ${{ inputs.skaffold_project }}
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.skaffold_project }}" ]; then skaffold run -p ${{ inputs.skaffold_project }} fi
