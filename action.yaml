@@ -15,8 +15,8 @@ inputs:
     description: "Google Kubernetes Cluster *required if you are deploying"
     required: false
     default: ""
-  skaffold_project:
-    description: "The Skaffold project to use (prodcution/dev etc) *required if you are deploying"
+  skaffold_profile:
+    description: "The Skaffold profile to use (prodcution/dev etc) *required if you are deploying"
     required: false
     default: ""
   docker_slug:
@@ -62,11 +62,11 @@ runs:
           gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }}
         fi
 
-    - name: Skaffold build and deploy ${{ inputs.skaffold_project }}
+    - name: Skaffold build and deploy ${{ inputs.skaffold_profile }}
       shell: bash
       run: |
-        if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_project }}" ]]; then
-          skaffold run -p ${{ inputs.skaffold_project }}
+        if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_profile }}" ]]; then
+          skaffold run -p ${{ inputs.skaffold_profile }}
         fi
 
     - name: Build and Push Docker Image if there is a docker slug
