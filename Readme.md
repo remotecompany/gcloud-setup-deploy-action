@@ -27,7 +27,7 @@ Based on what you wish to do in this action.
 Running skaffold to deploy in the project?
 
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.13
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -38,7 +38,7 @@ Running skaffold to deploy in the project?
 
 Just Building a docker image? the version will be grabbed from the last tag (make sure this is something like v1.0.1 etc)
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.13
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -49,7 +49,7 @@ Just Building a docker image? the version will be grabbed from the last tag (mak
 
 Overide git tag
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.13
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -61,7 +61,7 @@ Overide git tag
 
 Add docker extra args for github token etc
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.13
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
