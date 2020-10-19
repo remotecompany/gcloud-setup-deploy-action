@@ -31,7 +31,7 @@ inputs:
     description: "The docker tag to overide the git version tag"
     required: false
   docker_build_extra:
-    description: "Extra docker build extra args e.g: --build-arg GITHUB_TOKEN=${{ secrets.GITHUBTOKEN }}"
+    description: "Extra docker build extra args e.g: --build-arg GITHUB_TOKEN=etc"
     required: false
     default: ""
 runs:
