@@ -34,6 +34,10 @@ inputs:
     description: "Extra docker build extra args e.g: --build-arg GITHUB_TOKEN=etc"
     required: false
     default: ""
+  artifact_registry:
+    description: "The artifact_registry to setup auth agains e.g: us-east1-docker.pkg.dev"
+    required: false
+    default: "europe-docker.pkg.dev"
 runs:
   using: "composite"
   steps:
@@ -64,7 +68,7 @@ runs:
     - name: Docker Login
       shell: bash
       run: |
-        gcloud beta auth configure-docker europe-docker.pkg.dev --quiet
+        gcloud beta auth configure-docker ${{ inputs.artifact_registry }} --quiet
 
     - name: Get Cluster Credentials
       shell: bash

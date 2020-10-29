@@ -23,6 +23,8 @@ Based on what you wish to do in this action.
 
 **docker_build_extra** - if specified will add docker build extra commands (see example).
 
+**artifact_registry** - The artifact_registry to setup auth agains e.g: us-east1-docker.pkg.dev (see example)
+
 # Examples
 Running skaffold to deploy in the project?
 
@@ -69,4 +71,16 @@ Add docker extra args for github token etc
     docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
     docker_file: "Dockerfile"
     docker_build_extra: "--build-arg GITHUB_TOKEN=${{ secrets.GITHUBTOKEN }}"
+```
+
+Use Diffrent artifact registry
+``` yaml
+- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    cluster: "mailerlite-v2"
+    skaffold_profile: "staging"
+    artifact_registry: "us-east1-docker.pkg.dev"
 ```
