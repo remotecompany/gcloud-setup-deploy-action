@@ -90,18 +90,22 @@ Add docker extra args for multi Arch build extra steps needed
 - name: Set up QEMU
   uses: docker/setup-qemu-action@master
   with:
-    platforms: amd64,arm64
+    platforms: all
 
 - name: Set up Docker Buildx
   id: buildx
   uses: docker/setup-buildx-action@master
+  with:
+    install: true
 
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
+- name: Build and Push
+  uses: remotecompany/gcloud-setup-deploy-action@v1.0.15
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
     zone: "europe-west1"
-    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
+    docker_slug: "europe-docker.pkg.dev/remotecompany/octopus/octopus"
     docker_file: "Dockerfile"
-    docker_build_extra: "--platform=linux/amd64,linux/arm64"
+    artifact_registry: "europe-docker.pkg.dev"
+    docker_build_extra: "--platform linux/amd64,linux/arm64"
 ```
