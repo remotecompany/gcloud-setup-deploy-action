@@ -68,7 +68,7 @@ runs:
     - name: Docker Login
       shell: bash
       run: |
-        gcloud beta auth configure-docker ${{ inputs.artifact_registry }} --quiet
+        gcloud auth configure-docker ${{ inputs.artifact_registry }} --quiet
 
     - name: Get Cluster Credentials
       shell: bash
