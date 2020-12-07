@@ -1,3 +1,8 @@
+# Breaking Changes
+
+Please be aware that we introduced a breaking change here in that you must use use https://cloud.google.com/sdk/docs/release-notes
+
+Gcloud SDK version 319 and above to allow container commands to be run as not part of the beta group.
 
 # Required Inputs: *
 
@@ -29,7 +34,7 @@ Based on what you wish to do in this action.
 Running skaffold to deploy in the project?
 
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
+- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -40,7 +45,7 @@ Running skaffold to deploy in the project?
 
 Just Building a docker image? the version will be grabbed from the last tag (make sure this is something like v1.0.1 etc)
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
+- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -51,7 +56,7 @@ Just Building a docker image? the version will be grabbed from the last tag (mak
 
 Overide git tag
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
+- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -63,7 +68,7 @@ Overide git tag
 
 Add docker extra args for github token etc
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
+- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -75,7 +80,7 @@ Add docker extra args for github token etc
 
 Use Diffrent artifact registry
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.0.14
+- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -99,7 +104,7 @@ Add docker extra args for multi Arch build extra steps needed
     install: true
 
 - name: Build and Push
-  uses: remotecompany/gcloud-setup-deploy-action@v1.0.15
+  uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
