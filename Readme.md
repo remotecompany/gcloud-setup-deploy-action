@@ -1,12 +1,12 @@
 # Breaking Changes
 
-Please be aware that we introduced a breaking change here in that you must use use https://cloud.google.com/sdk/docs/release-notes
+Please be aware that we introduced a breaking change here in that you must use https://cloud.google.com/sdk/docs/release-notes
 
 Gcloud SDK version 319 and above to allow container commands to be run as not part of the beta group.
 
 # Required Inputs: *
 
-**service_account_key** - A Google service account key that has access to artifact registry in the configure project.
+**service_account_key** - A Google service account key that has access to an artifact registry in the configured project.
 
 **project** - The Google account project
 
@@ -16,7 +16,7 @@ Gcloud SDK version 319 and above to allow container commands to be run as not pa
 
 Based on what you wish to do in this action.
 
-**cluster** - The k8s cluster name that gcloud auth and skaffold will use, this input is used to toggle on skaffold deployment, without it cluster auth will not be run.
+**cluster** - The k8s cluster name that gcloud auth and skaffold will use, this input is used to toggle the skaffold deployment, without it cluster auth will not be run.
 
 **skaffold_profile** - The skaffold Profile that is run, when the above is in use, is required when above is on.
 
@@ -24,93 +24,93 @@ Based on what you wish to do in this action.
 
 **docker_file** - Only required when building a docker image e.g: docker/mailerlite/Dockerfile "defaults too Dockerfile"
 
-**docker_tag** - if specified will allow yu to overide using the defualt git tag.
+**docker_tag** - if specified will allow you to override using the default git tag.
 
 **docker_build_extra** - if specified will add docker build extra commands (see example).
 
-**artifact_registry** - The artifact_registry to setup auth agains e.g: us-east1-docker.pkg.dev (see example)
+**artifact_registry** - The artifact_registry to setup auth against e.g: us-east1-docker.pkg.dev (see example)
 
 # Examples
 Running skaffold to deploy in the project?
 
 ``` yaml
 - uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
-  with:
-    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
-    project: "remotecompany"
-    zone: "europe-west1"
-    cluster: "mailerlite-v2"
-    skaffold_profile: "staging"
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    cluster: "mailerlite-v2"
+    skaffold_profile: "staging"
 ```
 
-Just Building a docker image? the version will be grabbed from the last tag (make sure this is something like v1.0.1 etc)
+Just building a docker image? The version will be grabbed from the last tag (make sure this is something like v1.0.1 etc)
 ``` yaml
 - uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
-  with:
-    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
-    project: "remotecompany"
-    zone: "europe-west1"
-    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
-    docker_file: "Dockerfile"
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
+    docker_file: "Dockerfile"
 ```
 
-Overide git tag
+Override git tag
 ``` yaml
 - uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
-  with:
-    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
-    project: "remotecompany"
-    zone: "europe-west1"
-    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
-    docker_file: "Dockerfile"
-    docker_tag: "v1.0.2"
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
+    docker_file: "Dockerfile"
+    docker_tag: "v1.0.2"
 ```
 
-Add docker extra args for github token etc
+Add docker extra args for GitHub token etc
 ``` yaml
 - uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
-  with:
-    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
-    project: "remotecompany"
-    zone: "europe-west1"
-    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
-    docker_file: "Dockerfile"
-    docker_build_extra: "--build-arg GITHUB_TOKEN=${{ secrets.GITHUBTOKEN }}"
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    docker_slug: "europe-docker.pkg.dev/remotecompany/autossl-caddy/autossl-caddy"
+    docker_file: "Dockerfile"
+    docker_build_extra: "--build-arg GITHUB_TOKEN=${{ secrets.GITHUBTOKEN }}"
 ```
 
-Use Diffrent artifact registry
+Use different artifact registry
 ``` yaml
 - uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
-  with:
-    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
-    project: "remotecompany"
-    zone: "europe-west1"
-    cluster: "mailerlite-v2"
-    skaffold_profile: "staging"
-    artifact_registry: "us-east1-docker.pkg.dev"
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    cluster: "mailerlite-v2"
+    skaffold_profile: "staging"
+    artifact_registry: "us-east1-docker.pkg.dev"
 ```
 
 Add docker extra args for multi Arch build extra steps needed
 ``` yaml
 - name: Set up QEMU
-  uses: docker/setup-qemu-action@master
-  with:
-    platforms: all
+  uses: docker/setup-qemu-action@master
+  with:
+    platforms: all
 
 - name: Set up Docker Buildx
-  id: buildx
-  uses: docker/setup-buildx-action@master
-  with:
-    install: true
+  id: buildx
+  uses: docker/setup-buildx-action@master
+  with:
+    install: true
 
 - name: Build and Push
-  uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
-  with:
-    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
-    project: "remotecompany"
-    zone: "europe-west1"
-    docker_slug: "europe-docker.pkg.dev/remotecompany/octopus/octopus"
-    docker_file: "Dockerfile"
-    artifact_registry: "europe-docker.pkg.dev"
-    docker_build_extra: "--platform linux/amd64,linux/arm64"
+  uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    docker_slug: "europe-docker.pkg.dev/remotecompany/octopus/octopus"
+    docker_file: "Dockerfile"
+    artifact_registry: "europe-docker.pkg.dev"
+    docker_build_extra: "--platform linux/amd64,linux/arm64"
 ```
