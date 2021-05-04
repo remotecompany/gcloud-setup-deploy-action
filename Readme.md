@@ -6,7 +6,7 @@ Gcloud SDK version 319 and above to allow container commands to be run as not pa
 
 # Required Inputs: *
 
-**service_account_key** - A Google service account key that has access to an artifact registry in the configured project.
+**service_account_key** - A **base64-encoded** Google service account key that has access to an artifact registry in the configured project.
 
 **project** - The Google account project
 
