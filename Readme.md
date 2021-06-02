@@ -30,11 +30,13 @@ Based on what you wish to do in this action.
 
 **artifact_registry** - The artifact_registry to setup auth against e.g: us-east1-docker.pkg.dev (see example)
 
+**helm_pat** - The personal access token for setting up helm repository
+
 # Examples
 Running skaffold to deploy in the project?
 
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
+- uses: remotecompany/gcloud-setup-deploy-action@v1.2.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -45,7 +47,7 @@ Running skaffold to deploy in the project?
 
 Just building a docker image? The version will be grabbed from the last tag (make sure this is something like v1.0.1 etc)
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
+- uses: remotecompany/gcloud-setup-deploy-action@v1.2.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -56,7 +58,7 @@ Just building a docker image? The version will be grabbed from the last tag (mak
 
 Override git tag
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
+- uses: remotecompany/gcloud-setup-deploy-action@v1.2.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -68,7 +70,7 @@ Override git tag
 
 Add docker extra args for GitHub token etc
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
+- uses: remotecompany/gcloud-setup-deploy-action@v1.2.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -78,9 +80,21 @@ Add docker extra args for GitHub token etc
     docker_build_extra: "--build-arg GITHUB_TOKEN=${{ secrets.GITHUBTOKEN }}"
 ```
 
+Use Helm Repo
+``` yaml
+- uses: remotecompany/gcloud-setup-deploy-action@v1.2.0
+  with:
+    service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    project: "remotecompany"
+    zone: "europe-west1"
+    cluster: "mailerlite-v2"
+    skaffold_profile: "staging"
+    helm_pat: ${{ secrets.HELM_PAT }}
+```
+
 Use different artifact registry
 ``` yaml
-- uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
+- uses: remotecompany/gcloud-setup-deploy-action@v1.2.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
@@ -104,7 +118,7 @@ Add docker extra args for multi Arch build extra steps needed
     install: true
 
 - name: Build and Push
-  uses: remotecompany/gcloud-setup-deploy-action@v1.1.0
+  uses: remotecompany/gcloud-setup-deploy-action@v1.2.0
   with:
     service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
     project: "remotecompany"
