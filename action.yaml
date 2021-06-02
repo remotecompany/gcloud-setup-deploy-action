@@ -38,6 +38,10 @@ inputs:
     description: "The artifact_registry to setup auth agains e.g: us-east1-docker.pkg.dev"
     required: false
     default: "europe-docker.pkg.dev"
+  helm_pat:
+    description: "PAT for setting up helm repo"
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -75,6 +79,13 @@ runs:
       run: |
         if [ -n "${{ inputs.cluster }}" ]; then
           gcloud container clusters get-credentials ${{ inputs.cluster }} --zone=${{ inputs.zone }}
+        fi
+
+    - name: Setup Helm repo
+      shell: bash
+      run: |
+        if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_profile }}" && -n "${{ inputs.helm_pat }}" ]]; then
+            helm repo add --username ziltoidbot --password ${{ inputs.helm_pat }} remotecompany https://raw.githubusercontent.com/remotecompany/charts/main/index
         fi
 
     - name: Skaffold build and deploy ${{ inputs.skaffold_profile }}
