@@ -92,6 +92,7 @@ runs:
       shell: bash
       run: |
         if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_profile }}" ]]; then
+          helm repo add bitnami https://charts.bitnami.com/bitnami
           skaffold run -p ${{ inputs.skaffold_profile }}
         fi
 
