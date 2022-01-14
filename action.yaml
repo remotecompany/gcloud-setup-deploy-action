@@ -103,9 +103,3 @@ runs:
           docker build ${{ inputs.docker_build_extra }} -f ${{ inputs.docker_file }} -t ${{ inputs.docker_slug }}:${{ steps.get_version.outputs.VERSION }} -t ${{ inputs.docker_slug }}:latest .
           echo "${{ inputs.docker_slug }}:${{ steps.get_version.outputs.VERSION }}" "${{ inputs.docker_slug }}:latest" | xargs -n 1 docker push
         fi
-
-    - name: Move cache
-      shell: bash
-      run: |
-        rm -rf /tmp/.buildx-cache
-        [ -f /tmp/.buildx-cache-new ] && mv /tmp/.buildx-cache-new /tmp/.buildx-cache
