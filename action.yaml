@@ -46,6 +46,18 @@ inputs:
     description: "An environment to run make helm:validate against (usually one of branch|dev|prod)"
     required: false
     default: "prod"
+  validate_k8s_version:
+    description: "A Kubernetes version to validate against"
+    required: false
+    default: "1.19.12"
+  validate_chart_path:
+    description: "The dir where Helm chart configuration is"
+    required: false
+    default: "helm/"
+  validate_chart_name:
+    description: "A chart's name"
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -95,16 +107,14 @@ runs:
     - name: Validate Helm templates
       shell: bash
       run: |
-        helm secrets template mailersend helm/ --kube-version=1.19.12 --namespace "${{ inputs.validate_helm_env }}" -f helm/values."${{ inputs.validate_helm_env }}".yaml -f helm/secrets."${{ inputs.validate_helm_env }}".yaml > "${{ inputs.validate_helm_env }}".yaml 
-        /usr/local/bin/kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/ -v 1.19.12 --strict --ignore-missing-schemas --filename=""${{ inputs.validate_helm_env }}".yaml" "${{ inputs.validate_helm_env }}".yaml
+        helm secrets template "${{ inputs.validate_chart_name }}" "${{ inputs.validate_chart_path }}" --kube-version="${{ inputs.validate_k8s_version }}" --namespace "${{ inputs.validate_helm_env }}" -f helm/values."${{ inputs.validate_helm_env }}".yaml -f helm/secrets."${{ inputs.validate_helm_env }}".yaml > "${{ inputs.validate_helm_env }}".yaml 
+        /usr/local/bin/kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/ -v "${{ inputs.validate_k8s_version }}" --strict --ignore-missing-schemas --filename=""${{ inputs.validate_helm_env }}".yaml" "${{ inputs.validate_helm_env }}".yaml
           
         if [ -s "${{ inputs.validate_helm_env }}".yaml ]; then
           exit 0
         else
           exit 1
         fi
-      env:
-        GOOGLE_APPLICATION_CREDENTIALS: /tmp/key.json        
 
     - name: Skaffold build and deploy ${{ inputs.skaffold_profile }}
       shell: bash
