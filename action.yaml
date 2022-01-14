@@ -108,4 +108,4 @@ runs:
       shell: bash
       run: |
         rm -rf /tmp/.buildx-cache
-        [ ! -f /tmp/.buildx-cache-new  ] || mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        [ -f /tmp/.buildx-cache-new ] && mv /tmp/.buildx-cache-new /tmp/.buildx-cache
