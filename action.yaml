@@ -15,8 +15,16 @@ inputs:
     description: "Google Kubernetes Cluster *required if you are deploying"
     required: false
     default: ""
+  skaffold_command:
+    description: "The Skaffold command to use default to run"
+    required: false
+    default: "run"
   skaffold_profile:
     description: "The Skaffold profile to use (prodcution/dev etc) *required if you are deploying"
+    required: false
+    default: ""
+  skaffold_extra:
+    description: "The Skaffold extra args"
     required: false
     default: ""
   docker_slug:
@@ -93,7 +101,7 @@ runs:
       run: |
         if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_profile }}" ]]; then
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          skaffold run -p ${{ inputs.skaffold_profile }}
+          skaffold {{ inputs.skaffold_command }} -p ${{ inputs.skaffold_profile }} {{ inputs.skaffold_extra }}
         fi
 
     - name: Build and Push Docker Image if there is a docker slug
