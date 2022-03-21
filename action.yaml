@@ -101,7 +101,7 @@ runs:
       run: |
         if [[ -n "${{ inputs.cluster }}" && -n "${{ inputs.skaffold_profile }}" ]]; then
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          skaffold {{ inputs.skaffold_command }} -p ${{ inputs.skaffold_profile }} {{ inputs.skaffold_extra }}
+          skaffold ${{ inputs.skaffold_command }} -p ${{ inputs.skaffold_profile }} ${{ inputs.skaffold_extra }}
         fi
 
     - name: Build and Push Docker Image if there is a docker slug
